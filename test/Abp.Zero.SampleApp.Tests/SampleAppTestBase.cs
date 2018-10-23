@@ -177,5 +177,13 @@ namespace Abp.Zero.SampleApp.Tests
             await UserManager.ProhibitPermissionAsync(user, PermissionManager.GetPermission(permissionName));
             (await UserManager.IsGrantedAsync(user.Id, permissionName)).ShouldBe(false);
         }
+
+        protected void LoginAsDefaultTenantAdmin(Action<int?, long?> action)
+        {
+            using (AbpSession.Use(1, 2))
+            {
+                action.Invoke(AbpSession.TenantId, AbpSession.UserId);
+            }
+        }
     }
 }
